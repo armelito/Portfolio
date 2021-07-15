@@ -1,0 +1,80 @@
+.home
+  @extend .page
+
+  &__contact
+    &__wrapper
+      // Sizes
+      width 100vw
+      padding ratio(220) $horizontalPadding
+      // Position
+      position relative
+
+    &__items
+      // Flexbox
+      flex(1 1 auto)
+      flex-direction column
+      @extend .flex--bs
+      // Sizes
+      height ratio(582)
+
+      &__title
+        // Text
+        @extend h2
+        // Position
+        margin-left ratio(200)
+
+      &__text
+        // Text
+        @extend .text--large
+        // Size
+        width ratio(654)
+        // Postion
+        margin-left ratio(304)
+
+      &__link
+        // Postion
+        margin-left ratio(700)
+
+        &__button
+          @extend .button--primary--large
+
+    &__assets
+      // Flexbox
+      flex(1 1 auto)
+      flex-direction column
+      @extend .flex--bs
+      // Sizes
+      height ratio(200)
+      // Position
+      margin-top ratio(235)
+
+      &__link
+        // Postion
+        margin-left ratio(569)
+
+        &:first-child
+          // Postion
+          margin-left ratio(198)
+
+        &:last-child
+          // Postion
+          margin-left ratio(988)
+
+        &__text
+          // Text
+          @extend .text--large
+          // Color overwrite
+          color $white
+
+  &__media
+    &__leftTop
+      absolute-lt(0, 413px)
+
+    &__rightTop
+      absolute-rt(0, 0)
+
+    &__leftBottom
+      absolute-lb(0, 0)
+
+    &__rightBottom
+      absolute-rb(0, 0)

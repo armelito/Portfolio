@@ -1,0 +1,22 @@
+extends ../base.pug
+
+block variables
+  - var template = 'project'
+
+block content
+  .project
+    .project__wrapper
+      section
+        h1(data-animation="title")="Project"
+        figure.project__media
+          img.project__media__image(alt=project.data.image.alt data-src=project.data.image.url)
+
+        .project__information
+          h1.project__information__title(data-animation="title")=project.data.title
+          p.project__information__description(data-animation="title")=project.data.description
+          a.project__information__link(href=project.data.link_url.url target='_blank')=project.data.link_text
+
+        h1(data-animation="title")="Project"
+
+        figure.project__media
+          img.project__media__image(alt=project.data.image.alt data-src=project.data.image.url)

@@ -1,0 +1,99 @@
+*,
+*:after,
+*:before
+  box-sizing border-box
+
+html
+  smoothScrollInit()
+
+  overflow hidden
+  font-size ratio(16)
+
+body
+  smoothScrollInit()
+
+  background-color $background
+  margin 0 auto
+
+a
+  outline none
+  text-decoration none
+  color $white
+
+//section
+//  padding $sectionVerticalPadding $sectionHorizontalPadding
+
+img
+  width 100%
+  height 100%
+  object-fit cover
+  vertical-align middle
+  opacity 0
+  transition opacity 500ms $ease-in-1
+
+  &.loaded
+    opacity 1
+
+.content
+  smoothScrollInit()
+
+.link__box
+  height 200px
+
+// Animations
+[data-animation="title"]
+  span
+    display inline-block
+    overflow hidden
+    vertical-align top
+
+[data-animation="subtitle"]
+  span
+    display inline-block
+    overflow hidden
+    vertical-align top
+
+[data-animation="link"]
+  // Perspective
+  perspective 800px
+  // Style for animation
+  display inline-block
+  position relative
+  white-space nowrap
+  //overflow hidden
+  vertical-align top
+
+  .--span-to-hide
+    //transform translate3d(0, 0, 10px)
+
+  .--span-to-hide, .--span-to-reveal
+    span
+      span
+        // Position, style for the animation
+        position relative
+        display inline-block
+        vertical-align top
+        // Perspective
+        transform-origin bottom
+        transform-style preserve-3d
+        backface-visibility hidden
+
+  .--span-to-reveal
+    // Position
+    position absolute
+    top 0
+    left 0
+
+    //transform translate3d(0, 0, 10px)
+
+    span
+      span
+        // Perspective
+        transform-style preserve-3d
+        transform-origin top
+        transform translateY(100%) rotateX(-90deg)
+        backface-visibility hidden
+
+  h1.--span-to-reveal
+    // Position
+    top 0

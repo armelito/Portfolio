@@ -1,0 +1,38 @@
+extends ../base.pug
+
+block variables
+  - var template = 'home'
+
+block content
+  .home(data-background="#FFFBF5" data-color="#7D8795")
+    .home__wrapper
+      include ../components/gallery
+      include ../components/banner
+      // Contact
+      section.home__contact__wrapper
+        // Contact info
+        .home__contact__items
+          h2.home__contact__items__title=home.data.contact_title
+          p.home__contact__items__text=home.data.contact_text
+          a.home__contact__items__link(href=home.data.contact_link.url)
+            button.home__contact__items__link__button=home.data.contact_link_text
+        // Contact links
+        .home__contact__assets
+          a.home__contact__assets__link(data-animation="link" href=home.data.assets_resume)
+            span.home__contact__assets__link__text.link--select.--span-to-hide=home.data.assets_resume_text
+            span.home__contact__assets__link__text.link--select.--span-to-reveal=home.data.assets_resume_text
+          a.home__contact__assets__link(data-animation="link" href=home.data.assets_mail)
+            span.home__contact__assets__link__text.link--select.--span-to-hide=home.data.assets_mail_text
+            span.home__contact__assets__link__text.link--select.--span-to-reveal=home.data.assets_mail_text
+          a.home__contact__assets__link(data-animation="link" href=home.data.assets_linkedin)
+            span.home__contact__assets__link__text.link--select.--span-to-hide=home.data.assets_linkedin_text
+            span.home__contact__assets__link__text.link--select.--span-to-reveal=home.data.assets_linkedin_text
+        // Illustrations contact section
+        figure.home__media__leftTop
+          img.home__media__leftTop__image(alt=home.data.contact_left_top.alt data-src=home.data.contact_left_top.url)
+        figure.home__media__rightTop
+          img.home__media__rightTop__image(alt=home.data.contact_right_top.alt data-src=home.data.contact_right_top.url)
+        figure.home__media__leftBottom
+          img.home__media__leftBottom__image(alt=home.data.contact_left_bottom.alt data-src=home.data.contact_left_bottom.url)
+        figure.home__media__rightBottom
+          img.home__media__rightBottom__image(alt=home.data.contact_right_bottom.alt data-src=home.data.contact_right_bottom.url)
