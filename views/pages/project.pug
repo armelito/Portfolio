@@ -14,7 +14,9 @@ block content
         .project__information
           h1.project__information__title(data-animation="title")=project.data.title
           p.project__information__description(data-animation="title")=project.data.description
-          a.project__information__link(href=project.data.link_url.url target='_blank')=project.data.link_text
+          a.project__information__link(data-animation="link" href=project.data.link_url.url target='_blank')
+            span.project__information__link__text.link--select.--span-to-hide=project.data.link_text
+            span.project__information__link__text.link--select.--span-to-hide=project.data.link_text
 
         h1(data-animation="title")="Project"
 

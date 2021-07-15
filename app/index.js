@@ -1,8 +1,9 @@
 // lodash tool
 import each from 'lodash/each'
-// Nav & preloader
+// Components
 import Navigation from './components/Navigation'
 import Preloader from 'components/Preloader'
+import Canvas from 'components/Canvas'
 // Pages
 import About from 'pages/About'
 import Projects from 'pages/Projects'
@@ -15,6 +16,7 @@ class App
   {
     // Create content
     this.createContent()
+    this.createCanvas()
     // Init Preloader and navigation stuff
     this.createPreloader()
     this.createNavigation()
@@ -37,10 +39,10 @@ class App
     })
   }
 
-  createPreloader()
+  createPreloader() // CHECK PRELOADER FILE IF CANVAS
   {
     // Init navigation
-    this.preloader = new Preloader()
+    this.preloader = new Preloader()//{ canvas: this.canvas })
     // Emit event when completed
     this.preloader.once('completed', this.onPreloaded.bind(this))
   }
@@ -51,6 +53,11 @@ class App
     this.content = document.querySelector('.content')
     // Get current template
     this.template = this.content.getAttribute('data-template')
+  }
+
+  createCanvas()
+  {
+    this.canvas = new Canvas({ template: this.template })
   }
 
   createPages()
@@ -72,6 +79,8 @@ class App
 
   onPreloaded()
   {
+    //this.onResize()
+    //this.canvas.onPreloaded()
     // Destroy the preloader when completed
     this.preloader.destroy()
     // Then show the page
@@ -96,6 +105,9 @@ class App
       // Init it as current image
       this.previousImage.current = _img
     }
+
+    // Start Canvas
+    //this.canvas.onChangeStart(this.template)
     // Wait for the page to be hidden
     await this.page.hide(this.previousImage)
     // Then fetch url
@@ -118,6 +130,8 @@ class App
       this.content.setAttribute('data-template', this.template)
       // Set the html of this new template
       this.content.innerHTML = divContent.innerHTML
+      // End canvas
+      //this.canvas.onChangeEnd(this.template)
       // Get the page related to the template then create it and then show it
       this.page = this.pages[this.template]
       this.page.create()
@@ -172,6 +186,11 @@ class App
     {
       this.page.update()
     }
+
+    if (this.canvas && this.canvas.update)
+    {
+      this.canvas.update(this.page.scroll)
+    }
     // Loop
     this.frame = window.requestAnimationFrame(this.update.bind(this))
   }
@@ -182,11 +201,51 @@ class App
     {
       this.page.onResize()
     }
+    // Canvas
+    if (this.canvas && this.canvas.onResize)
+    {
+      this.canvas.onResize()
+    }
+    // Canvas loop
+    //window.requestAnimationFrame((_) =>
+    //{
+    //  if (this.canvas && this.canvas.onResize)
+    //  {
+    //    this.canvas.onResize()
+    //  }
+    //})
+  }
+
+  onMouseDown(event)
+  {
+    if (this.canvas && this.canvas.onMouseDown)
+    {
+      this.canvas.onMouseDown(event)
+    }
+  }
+
+  onMouseMove(event)
+  {
+    if (this.canvas && this.canvas.onMouseMove)
+    {
+      this.canvas.onMouseMove(event)
+    }
+  }
+
+  onMouseUp(event)
+  {
+    if (this.canvas && this.canvas.onMouseUp)
+    {
+      this.canvas.onMouseUp(event)
+    }
   }
 
   addEventListeners () {
     // On resize
     window.addEventListener('resize', this.onResize.bind(this))
+    window.addEventListener("mousedown", this.onMouseDown.bind(this))
+    window.addEventListener("mousemove", this.onMouseMove.bind(this))
+    window.addEventListener("mouseup", this.onMouseUp.bind(this))
   }
 
   addLinkListeners ()

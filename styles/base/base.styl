@@ -2,6 +2,7 @@
 *:after,
 *:before
   box-sizing border-box
+  cursor none
 
 html
   smoothScrollInit()
@@ -33,6 +34,28 @@ img
 
   &.loaded
     opacity 1
+
+.cursor
+  position absolute
+  transform translate(-50%, -50%)
+  transition transform 300ms cubic-bezier(.42,0,.87,.28)
+  pointer-events none
+  z-index 1000
+  width 12px
+  height 12px
+  border-radius 100px
+  background-color $white
+
+.mouse-down
+  transform-origin center
+  transform scale(0.6)
+  transition transform 200ms cubic-bezier(.42,0,.87,.28)
+
+.mouse-enter
+  transform-origin center
+  transform scale(2)
+  opacity 0.6
+  transition transform 200ms cubic-bezier(.42,0,.87,.28)
 
 .content
   smoothScrollInit()

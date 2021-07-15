@@ -83,6 +83,7 @@ export default class Page {
         }
       }
     })
+    console.log('createpage')
     // Init functions
     this.createAnimations()
     this.createPreloader()
@@ -90,6 +91,7 @@ export default class Page {
 
   createAnimations ()
   {
+    console.log('createanim')
     // Create animations array
     this.animations = []
     // Title
@@ -122,6 +124,8 @@ export default class Page {
     this.animations.push(...this.animationsParagraph)
     this.animations.push(...this.animationsLabel)
     this.animations.push(...this.animationsLink)
+
+    console.log(this.animations)
   }
 
   createPreloader ()
@@ -222,6 +226,11 @@ export default class Page {
   {
     const { pixelY } = NormalizeWheel(_event)
     this.scroll.target += pixelY
+
+    //if (this.canvas && this.canvas.onWheel)
+    //{
+    //  this.canvas.onWheel(pixelY)
+    //}
   }
   // Resize function
   onResize ()
