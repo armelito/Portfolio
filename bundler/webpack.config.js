@@ -109,7 +109,8 @@ module.exports = {
                   return '[path][name].[ext]'
                 }
                 return '[hash].[ext]'
-              }
+              },
+              outputPath: 'assets/images/'
             }
           },
           // Minify images files

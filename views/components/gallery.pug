@@ -1,8 +1,8 @@
 .gallery__wrapper
   each collection in collections
     each project in collection.data.projects
-      section.gallery__project
-        a.gallery__project__link(data-animation="link" href=link(project.projects_project))
+      section.gallery__project(data-animation="gallery-section")
+        a.gallery__project__link.--navigation__link(href=link(project.projects_project))
           h1.gallery__project__title.link--select.--span-to-hide=project.projects_project.data.title
           h1.gallery__project__title.link--select.--span-to-reveal=project.projects_project.data.title
 

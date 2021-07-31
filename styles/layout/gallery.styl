@@ -12,15 +12,89 @@
     // Position
     position relative
 
+    &:nth-child(1)
+      a
+        h1
+          margin-left 200px
+
+    &:nth-child(2)
+      a
+        h1
+          margin-left 280px
+
+    &:nth-child(3)
+      a
+        h1
+          margin-left 460px
+
+    &:nth-child(4)
+      a
+        h1
+          margin-left 360px
+
+    &:nth-child(5)
+      a
+        h1
+          margin-left 260px
+
+    &:nth-child(6)
+      a
+        h1
+          margin-left 430px
+
+    &:nth-child(7)
+      a
+        h1
+          margin-left 370px
+
+    &:nth-child(8)
+      a
+        h1
+          margin-left 280px
+
+    &:nth-child(9)
+      a
+        h1
+          margin-left 479px
+
+    &:nth-child(10)
+      a
+        h1
+          margin-left 450px
+
+    &__media
+      width ratio(250)
+      height ratio(333)
+
+      pointer-events none
+
+      position absolute
+      top 0
+      left 0
+
+      opacity 0
+
+      perspective 800px
+      transform-origin top left
+      transition transform 300ms cubic-bezier(.42,0,.87,.28)
+      transform translateX(-20px) translateY(100px) scaleX(0.25)
+      will-change transform
+
+      &__image
+        transform-style preserve-3d
+        transform rotateZ(-25deg) translateX(-60%) translateY(-20%)
+        will-change transform
+
     &__title
       // Sizes
       height pxToRem(110)
       font-size ratio(120)
 
-// To change
-figure.gallery__project__media
-  width ratio(500)
-  height ratio(666)
+
+
+/*
+
+
   //opacity 0
 // To change
 //img.gallery__project__media__image

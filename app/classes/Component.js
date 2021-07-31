@@ -1,72 +1,47 @@
 import EventEmitter from 'events'
-
 import each from 'lodash/each'
-
-export default class Component extends EventEmitter {
-  constructor ({
-    element,
-    elements
-  }) {
+export default class Component extends EventEmitter
+{
+  constructor({ _element, _elements })
+  {
     super()
 
-    this.selector = element
-    this.selectorChildren = { ...elements }
-    // Init functions
+    this.selector = _element
+    this.selectorChildren = { ..._elements }
+
     this.create()
     this.addEventListeners()
   }
 
-  create ()
+  create()
   {
-    // If DOM element already selected in a variable
-    if (this.selector instanceof window.HTMLElement)
-    {
-      // Store the variable of selected DOM element
-      this.element = this.selector
-    }
-    // If DOM element not selected
-    else
-    {
-      // Store DOM element in a variable
-      this.element = document.querySelector(this.selector)
-    }
-    // Create elements object
+    this.selector instanceof window.HTMLElement ? this.element = this.selector : this.element = document.querySelector(this.selector)
+
     this.elements = {}
-    // Loop on the DOM children of the element
-    each(this.selectorChildren, (entry, key) =>
+
+    each(this.selectorChildren, (_entry, _key) =>
     {
-      // If DOM element already selected in a variable
-      if (entry instanceof window.HTMLElement || entry instanceof window.NodeList || Array.isArray(entry))
-      {
-        // Store the variable of selected DOM element
-        this.elements[key] = entry
-      }
-      // If DOM element not selected
+      if(_entry instanceof window.HTMLElement || _entry instanceof window.NodeList || Array.isArray(_entry))
+        this.elements[_key] = _entry
+
       else
-      {
-        // Store DOM elements in a variable
-        this.elements[key] = document.querySelectorAll(entry)
-        // If there is no elements
-        if (this.elements[key].length === 0)
-        {
-          this.elements[key] = null
-        }
-        // If there is one element
-        else if (this.elements[key].length === 1)
-        {
-          this.elements[key] = document.querySelector(entry)
-        }
-      }
+        this.elements[_key] = document.querySelectorAll(_entry)
+
+        if(this.elements[_key].length === 0)
+          this.elements[_key] = null
+
+        else if (this.elements[_key].length === 1)
+          this.elements[_key] = document.querySelector(_entry)
     })
   }
 
-  addEventListeners ()
+  addEventListeners()
   {
-    // Overwrited in components files
+
   }
 
-  removeEventListeners ()
+  removeEventListeners()
   {
-    // Overwrited in components files
+
   }
 }

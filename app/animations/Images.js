@@ -1,23 +1,20 @@
 import GSAP from 'gsap'
-import { Timeline } from 'gsap/gsap-core'
 
-import Animation from '../classes/Animation'
-
-import { each } from 'lodash'
+import Animation from '../Classes/Animation'
 
 export default class Images extends Animation
 {
-  constructor ({ element, elements })
+  constructor ({ _element, _elements })
   {
     super (
       {
-        element,
-        elements
+        _element,
+        _elements
       }
     )
   }
 
-  animateIn ()
+  animateIn()
   {
     GSAP.set(this.image,
     {
@@ -26,7 +23,7 @@ export default class Images extends Animation
     })
   }
 
-  animateOut ()
+  animateOut()
   {
     GSAP.to(this.image,
     {
@@ -37,7 +34,7 @@ export default class Images extends Animation
     })
   }
 
-  onResize ()
+  onResize()
   {
     this.image = calculate(this.element)
   }

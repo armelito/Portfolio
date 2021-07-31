@@ -1,110 +1,72 @@
-import Component from 'classes/Component'
+import Component from 'Classes/Component'
 import each from 'lodash/each'
 
 export default class Animation extends Component
 {
-  constructor ({ element, elements })
+  constructor ({ _element, _elements })
   {
     super(
       {
-        element,
-        elements
+        _element,
+        _elements
       }
     )
+
     this.separateElements()
-    this.createHover()
-    this.createObserver()
 
-    this.cursor = document.querySelector('.cursor')
+    this.$cursor = document.querySelector('.cursor')
   }
 
-  separateElements ()
+  separateElements()
   {
-    // Init tabs
-    this.elementsToObserve = []
-    this.elementsToHover = []
-    // If there is more of one attribute
-    if (this.element.attributes.length > 1)
-    {
-      // Check if it's an element to observe
-      if (this.element.attributes[1].value != "link")
-      {
-        // Push it in the observe tab
-        this.elementsToObserve.push(this.element)
-      }
-      // Check if it's an hover element
-      else if (this.element.attributes[1].value === "link")
-      {
-        // Push it in the hover tav
-        this.elementsToHover.push(this.element)
-      }
-    }
+    if (this.element.attributes.length > 1 && this.element.attributes[1].value === "link")
+      this.createHover(this.element)
+
+    else if (this.element.attributes[0].value === "gallery-section")
+      this.createHover(this.element)
+
     else
-    {
-      // Push it in the observe tab
-      this.elementsToObserve.push(this.element)
-    }
-
-    return this.elementsToObserve, this.elementsToHover
+      this.createObserver(this.element)
   }
 
 
-  createObserver ()
+  createObserver()
   {
-    this.observer = new IntersectionObserver(entries =>
+    this.observer = new IntersectionObserver(_entries =>
     {
-      entries.forEach(entry =>
+      _entries.forEach(_entry =>
       {
-        if (entry.isIntersecting)
-        {
-          this.animateIn()
-        }
-        else
-        {
-          this.animateOut()
-        }
+        _entry.isIntersecting ? this.animateIn() : this.animateOut()
       })
     })
-    // Only observe elements to observer (if it is not empty, it's a bug fix)
+
     each(this.elementsToObserve, elementToObserve =>
     {
-      if(elementToObserve.length != 0)
-      {
-        this.observer.observe(elementToObserve)
-      }
+      elementToObserve.length != 0 ? this.observer.observe(elementToObserve) : ''
     })
   }
 
-  createHover ()
+  createHover(_element)
   {
-    // Only elements to hover
-    each(this.elementsToHover, elementToHover =>
+    _element.addEventListener('mouseenter', event =>
     {
-      if(elementToHover.length != 0)
-      {
-        const el = elementToHover
-        // Hove in
-        el.addEventListener('mouseenter', event =>
-        {
-          this.animateIn(event)
-          this.cursor.classList.add('mouse-enter')
-        })
-        // Hover out
-        el.addEventListener('mouseleave', event =>
-        {
-          this.animateOut(event)
-          this.cursor.classList.remove('mouse-enter')
-        })
-      }
+      this.animateIn(event)
+      //this.$cursor.classList.add('mouse-enter')
+    })
+    // Hover out
+    _element.addEventListener('mouseleave', event =>
+    {
+      this.animateOut(event)
+      //this.$cursor.classList.remove('mouse-enter')
     })
   }
 
-  animateIn ()
+  animateIn()
   {
     // Overwrited in animations files
   }
 
-  animateOut ()
+  animateOut()
   {
     // Overwrited in animations files
   }

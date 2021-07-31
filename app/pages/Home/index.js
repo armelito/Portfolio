@@ -1,53 +1,38 @@
 // Lodash
 import each from 'lodash/each'
 // Classes
-import Page from 'classes/Page'
+import Page from 'Classes/Page'
 // Component
-import Gallery from 'components/Gallery'
-import Banner from 'components/Banner'
+import Gallery from 'Components/Gallery'
+import Banner from 'Components/Banner'
 
 export default class Home extends Page {
   constructor () {
     super({
-      id: 'home',
-      element: '.home',
-      elements: {
+      _id: 'home',
+      _element: '.home',
+      _elements: {
         wrapper: '.home__wrapper',
         section: document.querySelector('.gallery__project'),
         navigation: document.querySelector('.navigation'),
         link: '.home__link',
       }
     })
-    // Create projects gallery
+
     this.createComponents()
-    // Update elements position
-    this.updatePosition()
   }
 
-  createComponents ()
+  createComponents()
   {
-    // Init components
     this.gallery = new Gallery()
-    this.banner = new Banner()
-    // Init functions
-    this.gallery.titlesPosition()
-    this.gallery.imagesPosition()
+    //this.banner = new Banner()
   }
 
-  updatePosition ()
+  onUpdate()
   {
-    // Init update function if page is updated
-    if (this.banner && this.banner.updatePosition)
-    {
-      this.banner.updatePosition()
-    }
-    // Loop
-    this.frame = window.requestAnimationFrame(this.updatePosition.bind(this))
+    this.gallery.titlesPosition()
+
+    //if(this.banner && this.banner.updatePosition)
+    //  this.banner.updatePosition()
   }
-
-  //onResize () {
-  //  // Update pos on resize
-  //  this.updatePosition()
-  //}
-
 }

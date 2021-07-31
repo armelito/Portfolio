@@ -8,10 +8,11 @@ const express = require('express')
 const errorHandler = require('errorhandler')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-
+// App variables
 const app = express()
 const port = 3000
-// Prismic init
+const UAParser = require('ua-parser-js')
+// Prismic modules
 const Prismic = require('@prismicio/client')
 const PrismicDOM = require('prismic-dom')
 const { cpuUsage } = require('process')
@@ -46,7 +47,7 @@ const handleLinkResolver = doc =>
   {
     return `/about`
   }
-  // Default to homepage
+  // Default = homepage
   return '/';
 }
 // Middleware
@@ -60,6 +61,12 @@ app.use(errorHandler())
 // Craft prismic data to the DOM
 app.use((req, res, next) =>
 {
+  // Init ua parser request
+  const ua = UAParser(req.headers['user-agent'])
+  // UA parser variables
+  res.locals.isDesktop = ua.device.type === undefined
+  res.locals.isPhone = ua.device.type === 'mobile'
+  res.locals.isTablet = ua.device.type === 'tablet'
   // Add resolver links
   res.locals.link = handleLinkResolver
   // Add DOM
@@ -81,7 +88,7 @@ const handleRequest = async api => {
   const meta = await api.getSingle('meta')
   const navigation = await api.getSingle('navigation')
   const preloader = await api.getSingle('preloader')
-  // Send
+  // Datas returned
   return {
     meta,
     navigation,

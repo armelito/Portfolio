@@ -2,10 +2,13 @@ extends ../base.pug
 
 block variables
   - var template = 'home'
+  - var next = 'next'
 
 block content
   .home(data-background="#FFFBF5" data-color="#7D8795")
     .home__wrapper
+      div.nav-next
+        span=next
       include ../components/gallery
       include ../components/banner
       // Contact
@@ -18,13 +21,13 @@ block content
             button.home__contact__items__link__button=home.data.contact_link_text
         // Contact links
         .home__contact__assets
-          a.home__contact__assets__link(data-animation="link" href=home.data.assets_resume)
+          a.home__contact__assets__link(href=home.data.assets_resume)
             span.home__contact__assets__link__text.link--select.--span-to-hide=home.data.assets_resume_text
             span.home__contact__assets__link__text.link--select.--span-to-reveal=home.data.assets_resume_text
-          a.home__contact__assets__link(data-animation="link" href=home.data.assets_mail)
+          a.home__contact__assets__link(href=home.data.assets_mail)
             span.home__contact__assets__link__text.link--select.--span-to-hide=home.data.assets_mail_text
             span.home__contact__assets__link__text.link--select.--span-to-reveal=home.data.assets_mail_text
-          a.home__contact__assets__link(data-animation="link" href=home.data.assets_linkedin)
+          a.home__contact__assets__link(href=home.data.assets_linkedin)
             span.home__contact__assets__link__text.link--select.--span-to-hide=home.data.assets_linkedin_text
             span.home__contact__assets__link__text.link--select.--span-to-reveal=home.data.assets_linkedin_text
         // Illustrations contact section

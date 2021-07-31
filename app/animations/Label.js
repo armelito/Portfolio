@@ -1,24 +1,24 @@
 import GSAP from 'gsap'
 import each from 'lodash/each'
-import Animation from '../classes/Animation'
+import Animation from '../Classes/Animation'
 
 import { split } from 'utils/text'
 
 export default class Label extends Animation
 {
-  constructor ({ element, elements })
+  constructor ({ _element, _elements })
   {
     super (
       {
-        element,
-        elements
+        _element,
+        _elements
       }
     )
 
     this.elementLinesSpans = split({ append: true, element: this.element })
   }
 
-  animateIn ()
+  animateIn()
   {
     this.timelineIn = GSAP.timeline({ delay: 0.5 })
 
@@ -27,26 +27,25 @@ export default class Label extends Animation
       autoAlpha: 1
     })
 
-    each(this.elementLines, (line, index) =>
+    each(this.elementLines, (_line, _index) =>
     {
-      this.timelineIn.fromTo(line,
+      this.timelineIn.fromTo(_line,
       {
         autoAlpha: 0,
         y: '100%'
       },
       {
         autoAlpha: 1,
-        delay: index * 0.2,
+        delay: _index * 0.2,
         duration: 1.6,
         ease: 'expo-out',
         stagger: 0.014,
         y: '0%'
-      },
-      0)
+      }, 0)
     })
   }
 
-  animateOut ()
+  animateOut()
   {
     GSAP.set(this.elementLines,
     {
@@ -54,7 +53,7 @@ export default class Label extends Animation
     })
   }
 
-  onResize ()
+  onResize()
   {
     this.elementLines = this.elementLinesSpans
   }

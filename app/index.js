@@ -1,271 +1,225 @@
-// lodash tool
+/*
+ *    This app works like a single page application.
+ *    It is build without framework all from scratch.
+ *    It is a homemade framework.
+ *    The back-end is handled with prismic.
+ *    THREE.js is used to handle the webgl part to create
+ *    a beautiful and powerfull experience.
+ *    Bruno Simon and Luis Bizaro were a huge inspiration
+ *    for my work.
+ *
+ */
 import each from 'lodash/each'
 // Components
-import Navigation from './components/Navigation'
-import Preloader from 'components/Preloader'
-import Canvas from 'components/Canvas'
+import Navigation from './Components/Navigation'
+import Preloader from 'Components/Preloader'
+// WEBGL
+import Experience from './Experience/Experience.js'
 // Pages
-import About from 'pages/About'
-import Projects from 'pages/Projects'
-import Project from 'pages/Project'
-import Home from 'pages/Home'
-// App
+import About from 'Pages/About'
+import Projects from 'Pages/Projects'
+import Project from 'Pages/Project'
+import Home from 'Pages/Home'
 class App
 {
   constructor()
   {
-    // Create content
     this.createContent()
-    this.createCanvas()
-    // Init Preloader and navigation stuff
+    this.createExperience()
+
     this.createPreloader()
     this.createNavigation()
-    // Then create the pages
     this.createPages()
-    // Then add listeners
+
     this.addEventListeners()
     this.addLinkListeners()
-    // Init on window resize fuctions
+
     this.onResize()
-    // Init updates
     this.update()
   }
-
+  /*
+  *   Init app stuff
+  *   -> Navigation
+  *   -> Preloader
+  *   -> Content : Craft content
+  *   -> Experience : Webgl set up with THREE.js library
+  *   -> Pages : single page application
+  */
   createNavigation()
   {
-    // Init navigation
-    this.navigation = new Navigation({
-      template: this.template
-    })
+    this.navigation = new Navigation({ template: this.template })
   }
 
   createPreloader() // CHECK PRELOADER FILE IF CANVAS
   {
-    // Init navigation
-    this.preloader = new Preloader()//{ canvas: this.canvas })
-    // Emit event when completed
+    this.preloader = new Preloader()
     this.preloader.once('completed', this.onPreloaded.bind(this))
   }
 
   createContent()
   {
-    // Init content
     this.content = document.querySelector('.content')
-    // Get current template
     this.template = this.content.getAttribute('data-template')
   }
 
-  createCanvas()
+  createExperience()
   {
-    this.canvas = new Canvas({ template: this.template })
+    this.experience = new Experience({
+      targetElement: document.querySelector('.experience'),
+      template: this.template
+    })
   }
 
   createPages()
   {
-    // Init pages
-    this.pages = {
+    this.pages =
+    {
       about: new About(),
       projects: new Projects(),
       project: new Project(),
       home: new Home()
-    };
-    // Init current page based on current template
+    }
+
     this.page = this.pages[this.template]
-    // Create the page
     this.page.create()
-    // Onresize upadtes
+
     this.onResize()
   }
 
   onPreloaded()
   {
-    //this.onResize()
-    //this.canvas.onPreloaded()
-    // Destroy the preloader when completed
     this.preloader.destroy()
-    // Then show the page
     this.page.show()
   }
 
-  async onChange({ _url }, _img, _sectionParams)
+  onPopState()
   {
-    // Previous image stuff
-    this.previousImage =
-    {
-      current: null,
-      pos:
-      {
-        x: _sectionParams.paddingRight,
-        y: _sectionParams.paddingTop + _sectionParams.offsetTop
-      }
-    }
-    // If there was an image in the link
-    if (_img)
-    {
-      // Init it as current image
-      this.previousImage.current = _img
-    }
+    this.onChange({ _url: window.location.pathname, push: false })
+  }
 
-    // Start Canvas
-    //this.canvas.onChangeStart(this.template)
-    // Wait for the page to be hidden
-    await this.page.hide(this.previousImage)
-    // Then fetch url
+  async onChange({ _url, _push = true })
+  {
+    this.experience.onChangeStart(this.template)
+
+    await this.page.hide()
+
     const request = await window.fetch(_url)
-    // And if there's no error
-    if (request.status === 200)
+
+    if(request.status === 200)
     {
-      // Get html
       const html = await request.text()
-      // Create a div
       const div = document.createElement('div')
-      // Craft the html
+
+      if(_push) window.history.pushState({}, '', _url)
+
       div.innerHTML = html
-      // Get content and update the template value
       const divContent = div.querySelector('.content')
       this.template = divContent.getAttribute('data-template')
-      // Send the template when the navigation is changing
+
       this.navigation.onChange(this.template)
-      // Set the new current template
+
       this.content.setAttribute('data-template', this.template)
-      // Set the html of this new template
       this.content.innerHTML = divContent.innerHTML
-      // End canvas
-      //this.canvas.onChangeEnd(this.template)
-      // Get the page related to the template then create it and then show it
+
+      this.experience.onChangeEnd(this.template)
+
       this.page = this.pages[this.template]
       this.page.create()
-      this.page.show(this.previousImage)
-      // Init the listeners
+      this.page.show()
+
       this.addLinkListeners()
-      // Init onResize functions
       this.onResize()
     }
-    // If there's an error
     else
     {
-      console.log('error')
-      // Go the home page
       this.onChange({ _url: '/' })
     }
   }
 
-  params (_link) {
-    const params = {}
-    // Get the image of the link clicked
-    params.image = _link.querySelector('.gallery__project__media__image')
-    // Get the wrapper
-    const wrapper = document.querySelector('.home__wrapper')
-    // Get the section of the link clicked
-    const section = _link.parentElement
-    // Init the section offsetTop
-    let sectionOffesetTop = 0
-    // If wrapper is not null
-    if (wrapper)
-    {
-      // Caculate the section offsetTop
-      const scrollStyle = wrapper.style.transform
-      sectionOffesetTop = scrollStyle.match(/(\d+)/)
-    }
-    // Calculate the section params
-    params.sectionParams =
-    {
-      element: section,
-      offsetTop: section.offsetTop - sectionOffesetTop[0],
-      offsetLeft: section.getBoundingClientRect().left,
-      paddingTop: window.innerWidth / 1440 * 80,
-      paddingRight: window.innerWidth / 1440 * 164
-    }
+  update()
+  {
+    if(this.experience && this.experience.update)
+      this.experience.update()
 
-    return params
-  }
-
-  update () {
-    // Init update function if page is updated
-    if (this.page && this.page.update)
-    {
+    if(this.page && this.page.update)
       this.page.update()
-    }
 
-    if (this.canvas && this.canvas.update)
+    //if(this.template === 'home') this.pages.home.update()
+
+    window.requestAnimationFrame(() =>
     {
-      this.canvas.update(this.page.scroll)
-    }
-    // Loop
-    this.frame = window.requestAnimationFrame(this.update.bind(this))
+      this.update()
+    })
   }
+  /*
+  *   LISTENERS
+  *
+  */
+  onResize()
+  {
+    if(this.experience && this.experience.onResize)
+      this.experience.onResize()
 
-  onResize () {
-    // Init resize function if page is updated
-    if (this.page && this.page.onResize)
-    {
+    if(this.page && this.page.onResize)
       this.page.onResize()
-    }
-    // Canvas
-    if (this.canvas && this.canvas.onResize)
-    {
-      this.canvas.onResize()
-    }
-    // Canvas loop
-    //window.requestAnimationFrame((_) =>
-    //{
-    //  if (this.canvas && this.canvas.onResize)
-    //  {
-    //    this.canvas.onResize()
-    //  }
-    //})
   }
 
-  onMouseDown(event)
+  onTouchStart(_event)
   {
-    if (this.canvas && this.canvas.onMouseDown)
-    {
-      this.canvas.onMouseDown(event)
-    }
+
   }
 
-  onMouseMove(event)
+  onTouchMove(_event)
   {
-    if (this.canvas && this.canvas.onMouseMove)
-    {
-      this.canvas.onMouseMove(event)
-    }
+
   }
 
-  onMouseUp(event)
+  onMouseDown(_event)
   {
-    if (this.canvas && this.canvas.onMouseUp)
-    {
-      this.canvas.onMouseUp(event)
-    }
+
+  }
+
+  onMouseMove(_event)
+  {
+    //if(this.page && this.page.onMouseMove)
+    //  this.page.onMouseMove(_event)
+  }
+
+  onMouseUp(_event)
+  {
+
   }
 
   addEventListeners () {
-    // On resize
+
+    window.addEventListener('popstate', this.onPopState.bind(this))
     window.addEventListener('resize', this.onResize.bind(this))
-    window.addEventListener("mousedown", this.onMouseDown.bind(this))
-    window.addEventListener("mousemove", this.onMouseMove.bind(this))
-    window.addEventListener("mouseup", this.onMouseUp.bind(this))
+
+    //const isTouchCapable = 'ontouchstart' in window
+
+    //if(isTouchCapable)
+    //  window.addEventListener('touchstart', this.onTouchStart.bind(this))
+    //  window.addEventListener('touchmove', this.onTouchMove.bind(this))
+//
+    //if(!isTouchCapable)
+    //  window.addEventListener("mousedown", this.onMouseDown.bind(this))
+    //  window.addEventListener("mousemove", this.onMouseMove.bind(this))
+    //  window.addEventListener("mouseup", this.onMouseUp.bind(this))
   }
 
   addLinkListeners ()
   {
-    // Get all links
     const links = document.querySelectorAll('a')
-    // For each link
-    each(links, (link) =>
+
+    each(links, (_link) =>
     {
-      // Onclick
-      link.onclick = event =>
+      _link.onclick = event =>
       {
-        // Deleted default stuff
         event.preventDefault()
-        // Update params
-        const params = this.params(link)
-        // Set the location of the link clicked
-        const { href } = link
-        // Init onChange when a link is clicked passing the params we need
-        this.onChange({ _url: href }, params.image, params.sectionParams)
+
+        const { href } = _link
+
+        this.onChange({ _url: href })
       }
     })
   }

@@ -1,11 +1,11 @@
-import Page from 'classes/Page'
+import Page from 'Classes/Page'
 
 export default class Projects extends Page {
   constructor () {
     super({
-      id: 'projects',
-      element: '.projects',
-      elements: {
+      _id: 'projects',
+      _element: '.projects',
+      _elements: {
         wrapper: '.projects__wrapper',
         navigation: document.querySelector('.navigation')
       }

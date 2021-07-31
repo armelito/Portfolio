@@ -8,7 +8,6 @@ export default class Cursor
     this.element = document.createElement('div')
     this.element.classList.add('cursor')
     document.body.appendChild(this.element)
-
     this.cursor = document.querySelector('.cursor')
   }
 
@@ -34,11 +33,8 @@ export default class Cursor
     // Met à jour les coordonnées de la balle en appliquant un easing
     this.coords.x += (this.mouse.x - this.coords.x) * 0.1
     this.coords.y += (this.mouse.y - this.coords.y) * 0.1
-
+    // Update custom cursor coords
     this.cursor.style.left = `${this.coords.x}px`
     this.cursor.style.top = `${this.coords.y}px`
-
-    //this.context.arc(this.coords.x, this.coords.y, 50, 0, Math.PI * 2)
-
   }
 }

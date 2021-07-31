@@ -1,15 +1,15 @@
 import GSAP from 'gsap'
 import each from 'lodash/each'
 
-import Component from 'classes/Component'
+import Component from 'Classes/Component'
 
 import { PRIMARY_DEFAULT, PRIMARY_DARK } from 'utils/colors'
 
 export default class Navigation extends Component {
-  constructor ({ template }) {
+  constructor ({ _template }) {
     super({
-      element: '.navigation',
-      elements: {
+      _element: '.navigation',
+      _elements: {
         items: '.navigation__list__item',
         links: '.navigation__list__link',
         projects: '.gallery__project__link'
@@ -17,9 +17,9 @@ export default class Navigation extends Component {
     })
   }
 
-  onChange (template)
+  onChange (_template)
   {
-    if (template === 'about')
+    if (_template === 'about')
     {
       //GSAP.to(this.element, {
       //  color: PRIMARY_DEFAULT,

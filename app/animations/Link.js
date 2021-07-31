@@ -1,149 +1,143 @@
-// Libraries
 import each from 'lodash/each'
-// Animation
-import Animation from '../classes/Animation'
-// Utils
+
+import Animation from '../Classes/Animation'
+
 import { split } from 'utils/text'
 import { splitWord } from 'utils/letter'
-// Exports
+
 export default class Link extends Animation
 {
-  constructor ({ element, elements })
+  constructor ({ _element, _elements })
   {
     super (
       {
-        element,
-        elements
+        _element,
+        _elements
       }
     )
-    // Variables
+
     this.bool = false
     this.delayRatio = 0.09
     this.durationRatio = 50
     this.lettersToHideReverse = []
     this.lettersToRevealReverse = []
-    // DOM
-    this.spans = this.element.querySelectorAll('.link--select')
-    // SPLIT BY WORDS
-    each(this.spans, span =>
+
+    this.$spans = this.element.querySelectorAll('.link--select')
+
+    each(this.$spans, _span =>
     {
-      split({ element: span, append: true })
+      split({ element: _span, append: true })
     })
-    // Craft DOM
-    this.elementLinesSpans = this.element.querySelectorAll('.link--select span')
-    // SPLIT BY LETTERS
-    each(this.elementLinesSpans, span =>
+
+    this.$elementLinesSpans = this.element.querySelectorAll('.link--select span')
+
+    each(this.$elementLinesSpans, _span =>
     {
-      splitWord({ element: span })
+      splitWord({ element: _span })
     })
-    // Craft DOM
-    this.spanToHide = this.element.querySelectorAll('.--span-to-hide') // Span to hide wrapper
-    this.spanToReveal = this.element.querySelectorAll('.--span-to-reveal')  // Span to reveal wrapper
-    this.lettersToHide = this.element.querySelectorAll('.--span-to-hide span span') // Letters to hive
-    this.lettersToReveal = this.element.querySelectorAll('.--span-to-reveal span span') // Letter to reveal
-    // Reverse arrays for letters to hide
-    each(this.lettersToHide, letters =>
+
+    this.$spanToHide = this.element.querySelectorAll('.--span-to-hide') // Span to hide wrapper
+    this.$spanToReveal = this.element.querySelectorAll('.--span-to-reveal')  // Span to reveal wrapper
+    this.$lettersToHide = this.element.querySelectorAll('.--span-to-hide span span') // Letters to hive
+    this.$lettersToReveal = this.element.querySelectorAll('.--span-to-reveal span span') // Letter to reveal
+
+    each(this.$lettersToHide, _letters =>
     {
-      this.lettersToHideReverse.push(letters)
+      this.lettersToHideReverse.push(_letters)
     })
-    // Reverse arrays for letters to reveal
-    each(this.lettersToReveal, letters =>
+
+    each(this.$lettersToReveal, _letters =>
     {
-      this.lettersToRevealReverse.push(letters)
+      this.lettersToRevealReverse.push(_letters)
     })
-    // Reverse arrays
+
     this.lettersToHideReverse.reverse()
     this.lettersToRevealReverse.reverse()
   }
 
 
-  animateIn (_event)
+  animateIn(_event)
   {
-    // Update boolean
     this.bool = true
-    /* Animation
-     *  letters to reveal iteration  */
-    each(this.elementLettersToReveal, (letterToReveal, index) =>
+
+    each(this.elementLettersToReveal, (_letterToReveal, _index) =>
     {
-      // Animation calcs
-      this.animationDuration = 800 - index * this.durationRatio
-      this.animationDelay = index * ( this.delayRatio - ( index * this.delayRatio / 100 ))
-      // Init reveal function
-      this.show(letterToReveal, this.animationDelay, this.animationDuration)
+      this.animationDuration = 800 - _index * this.durationRatio
+      this.animationDelay = _index * ( this.delayRatio - ( _index * this.delayRatio / 100 ))
+
+      this.show(_letterToReveal, this.animationDelay, this.animationDuration)
     })
-    // Letters to hide iteration
-    each(this.elementLettersToHide, (letterToHide, index) =>
+
+    each(this.elementLettersToHide, (_letterToHide, _index) =>
     {
-      // Animation calcs
-      this.animationDuration = 800 - index * this.durationRatio
-      this.animationDelay = index * ( this.delayRatio - ( index * this.delayRatio / 100 ))
-      // Init hide function
-      this.hide(letterToHide, this.animationDelay, this.animationDuration)
+      this.animationDuration = 800 - _index * this.durationRatio
+      this.animationDelay = _index * ( this.delayRatio - ( _index * this.delayRatio / 100 ))
+
+      this.hide(_letterToHide, this.animationDelay, this.animationDuration)
     })
+
+    //this.$media = this.element.parentNode.querySelector('figure')
+    //this.$media.style.opacity = '1'
+    //this.$media.style.zIndex = '2000'
+    //this.$media.style.transform = `translateX(0) translateY(0) scaleX(1)`
   }
 
   animateOut (_event)
   {
-    // Update boolean
     this.bool = false
-     /* Animation
-      * letters to reveal iteration  */
-    each(this.elementLettersToRevealReverse, (letterToReveal, index) =>
+
+    each(this.elementLettersToRevealReverse, (_letterToReveal, _index) =>
     {
-      // Animation calcs
-      this.animationDuration = 800 - index * this.durationRatio
-      this.animationDelay = index * ( this.delayRatio - ( index * this.delayRatio / 100 ))
-      // Init reveal function
-      this.show(letterToReveal, this.animationDelay, this.animationDuration)
+      this.animationDuration = 800 - _index * this.durationRatio
+      this.animationDelay = _index * ( this.delayRatio - ( _index * this.delayRatio / 100 ))
+
+      this.show(_letterToReveal, this.animationDelay, this.animationDuration)
     })
-    // Letters to hide iteration
-    each(this.elementLettersToHideReverse, (letterToHide, index) =>
+
+    each(this.elementLettersToHideReverse, (_letterToHide, _index) =>
     {
-      // Animation calcs
-      this.animationDuration = 800 - index * this.durationRatio
-      this.animationDelay = index * ( this.delayRatio - ( index * this.delayRatio / 100 ))
+      this.animationDuration = 800 - _index * this.durationRatio
+      this.animationDelay = _index * ( this.delayRatio - ( _index * this.delayRatio / 100 ))
       // Init hide function
-      this.hide(letterToHide, this.animationDelay, this.animationDuration)
+      this.hide(_letterToHide, this.animationDelay, this.animationDuration)
     })
+
+    //this.$media.style.opacity = '0'
+    //this.$media.style.zIndex = '0'
+    //this.$media.style.transform = `translateX(-20px) translateY(100px) scaleX(0.25)`
   }
 
   show (_letterToReveal, _delay, _duration)
   {
-    // If animateIn
-    if (this.bool)
-    {
-      _letterToReveal.style.transform = "translateY(0%) translateZ(20px) rotateX(0deg) rotateY(0deg)"
+    this.bool ?
+    (
+      _letterToReveal.style.transform = "translateY(0%) translateZ(20px) rotateX(0deg) rotateY(0deg)",
       _letterToReveal.style.transition = `transform ${_duration}ms cubic-bezier(.42,0,.87,.28) ${_delay}s`
-    }
-    // If animateOut
-    else
-    {
-      _letterToReveal.style.transform = "translateY(100%) translateZ(0) rotateX(-90deg) rotateY(-2deg)"
+    ) :
+    (
+      _letterToReveal.style.transform = "translateY(100%) translateZ(0) rotateX(-90deg) rotateY(-2deg)",
       _letterToReveal.style.transition = `transform ${_duration}ms cubic-bezier(.42,0,.87,.28) ${_delay}s`
-    }
+    )
   }
 
   hide (_letterToHide, _delay, _duration)
   {
-    // If animateIn
-    if (this.bool)
-    {
-      _letterToHide.style.transform = "translateY(-100%) translateZ(20px) rotateX(90deg) rotateY(-2deg)"
+    this.bool ?
+    (
+      _letterToHide.style.transform = "translateY(-100%) translateZ(20px) rotateX(90deg) rotateY(-2deg)",
       _letterToHide.style.transition = `transform ${_duration}ms cubic-bezier(.42,0,.87,.28) ${_delay}s`
-    }
-    // If animateOut
-    else
-    {
-      _letterToHide.style.transform = "translateY(0%) translateZ(0px) rotateX(0deg) rotateY(0deg)"
+    ) :
+    (
+      _letterToHide.style.transform = "translateY(0%) translateZ(0px) rotateX(0deg) rotateY(0deg)",
       _letterToHide.style.transition = `transform ${_duration}ms cubic-bezier(.42,0,.87,.28) ${_delay}s`
-    }
+    )
   }
 
   onResize ()
   {
-    this.elementLines = this.elementLinesSpans
-    this.elementLettersToHide = this.lettersToHide
-    this.elementLettersToReveal = this.lettersToReveal
+    this.elementLines = this.$elementLinesSpans
+    this.elementLettersToHide = this.$lettersToHide
+    this.elementLettersToReveal = this.$lettersToReveal
     this.elementLettersToHideReverse = this.lettersToHideReverse
     this.elementLettersToRevealReverse = this.lettersToRevealReverse
   }
